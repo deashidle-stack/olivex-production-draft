@@ -46,7 +46,10 @@
 
   function createAprilStudy() {
     const study = document.createElement("article");
-    study.className = "study reveal";
+    // This card is appended after Jakob's reveal observer has already bound.
+    // Keep it visible inside the horizontal rail instead of leaving it at the
+    // observer's pre-animation opacity.
+    study.className = "study in-view";
     study.innerHTML = [
       '<span class="study-journal">Clinical Nutrition</span>',
       '<h3>APRIL-studien (Clinical Nutrition)</h3>',
@@ -115,6 +118,11 @@
 
     if (studies.children.length === 4) studies.append(createAprilStudy());
     Array.from(studies.querySelectorAll(":scope > .study")).forEach((study, index) => {
+      // Horizontal discovery is handled by the carousel itself. Cards that
+      // begin outside the viewport must still paint when the user scrolls to
+      // them, including the dynamically-added APRIL card.
+      study.classList.remove("reveal");
+      study.classList.add("in-view");
       const reference = STUDY_REFERENCES[index];
       if (!reference) return;
       let number = study.querySelector(":scope > .olivex-study-number");
@@ -269,6 +277,65 @@
     }
   }
 
+  function initializeGroveScrollReveal(frame, heritage) {
+    if (frame.dataset.olivexScrollRevealReady === "true") return;
+    frame.dataset.olivexScrollRevealReady = "true";
+
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    if (reducedMotion.matches) return;
+
+    // Ported from the approved checkpoint choreography:
+    //   clip inset 7% / 5% -> 0
+    //   section top 85% -> 22% of the viewport
+    // The requestAnimationFrame interpolation reproduces GSAP's scrubbed
+    // response without adding a new runtime dependency to Jakob's bundle.
+    let current = 0;
+    let target = 0;
+    let animationFrame = 0;
+    let lastTime = performance.now();
+
+    const progressForPosition = () => {
+      const sectionTop = heritage.getBoundingClientRect().top;
+      const start = window.innerHeight * 0.85;
+      const end = window.innerHeight * 0.22;
+      return Math.min(1, Math.max(0, (start - sectionTop) / Math.max(1, start - end)));
+    };
+
+    const render = (progress) => {
+      const remaining = 1 - progress;
+      frame.style.clipPath = `inset(${(7 * remaining).toFixed(3)}% ${(5 * remaining).toFixed(3)}% round ${(8 * remaining).toFixed(3)}px)`;
+    };
+
+    const animate = (time) => {
+      const elapsed = Math.min(64, Math.max(0, time - lastTime));
+      lastTime = time;
+      current += (target - current) * (1 - Math.exp(-elapsed / 170));
+
+      if (Math.abs(target - current) < 0.001) current = target;
+      render(current);
+
+      if (current !== target) {
+        animationFrame = window.requestAnimationFrame(animate);
+      } else {
+        animationFrame = 0;
+      }
+    };
+
+    const update = () => {
+      target = progressForPosition();
+      if (!animationFrame) {
+        lastTime = performance.now();
+        animationFrame = window.requestAnimationFrame(animate);
+      }
+    };
+
+    current = target = progressForPosition();
+    frame.classList.add("olivex-grove-scroll-reveal");
+    render(current);
+    window.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update, { passive: true });
+  }
+
   function ensureVideo() {
     document.querySelectorAll('[data-olivex-approved-delta="producer-video"]').forEach((section) => section.remove());
 
@@ -293,6 +360,7 @@
     if (!frame.querySelector("[data-olivex-grove-video-embed]")) {
       frame.append(createVideoControls());
     }
+    initializeGroveScrollReveal(frame, heritage);
     initializeVideo(frame);
   }
 

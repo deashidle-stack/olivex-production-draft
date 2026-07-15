@@ -469,6 +469,10 @@
   background: var(--olive-deep);
 }
 
+.heritage .olivex-grove-video-frame.olivex-grove-scroll-reveal {
+  will-change: clip-path;
+}
+
 .heritage .olivex-grove-video-frame > #grove-full {
   position: absolute;
   inset: 0;
@@ -601,6 +605,11 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .heritage .olivex-grove-video-frame.olivex-grove-scroll-reveal {
+    clip-path: none !important;
+    will-change: auto;
+  }
+
   .olivex-grove-play-disc,
   .olivex-grove-play-disc::before {
     animation: none !important;
