@@ -1139,7 +1139,9 @@ body.olivex-cart-is-open {
 
   .props[data-olivex-editorial-branch="five"] .props-grid::before {
     grid-column: 1;
+    width: 100%;
     height: 74px;
+    aspect-ratio: auto;
     background-size: contain;
   }
 
