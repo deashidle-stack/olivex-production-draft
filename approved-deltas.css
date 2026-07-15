@@ -939,7 +939,7 @@ body.olivex-cart-is-open {
   }
 }
 
-/* Fem grunner: one olive branch, five editorial chapters and Jakob's CTA. */
+/* Fem grunner: one uncropped olive branch and five editorial chapters. */
 .props[data-olivex-editorial-branch="five"] {
   overflow: hidden;
   min-height: clamp(760px, 68.9vw, 1041px);
@@ -971,8 +971,8 @@ body.olivex-cart-is-open {
 .props[data-olivex-editorial-branch="five"] .props-grid {
   position: relative;
   display: grid;
-  grid-template-columns: repeat(10, minmax(0, 1fr)) clamp(270px, 22.2vw, 335px);
-  grid-template-rows: minmax(205px, auto) auto minmax(185px, auto);
+  grid-template-columns: repeat(10, minmax(0, 1fr));
+  grid-template-rows: minmax(228px, auto) auto minmax(190px, auto);
   column-gap: 0;
   row-gap: 0;
   align-items: start;
@@ -981,13 +981,13 @@ body.olivex-cart-is-open {
 .props[data-olivex-editorial-branch="five"] .props-grid::before {
   content: "";
   grid-area: 2 / 1 / 3 / 11;
-  width: calc(100% + clamp(24px, 2.7vw, 41px));
+  width: 100%;
   height: auto;
   aspect-ratio: 1129 / 166;
   align-self: center;
-  justify-self: start;
-  margin-left: clamp(-12px, -0.75vw, -8px);
-  background: url("./assets/olive-branch-five-approved.png?v=2") center / 100% 100% no-repeat;
+  justify-self: stretch;
+  margin-left: 0;
+  background: url("./assets/olive-branch-five-approved.png?v=2") center / contain no-repeat;
   filter: saturate(1.85) contrast(1.32) brightness(0.86);
   pointer-events: none;
 }
@@ -1002,7 +1002,7 @@ body.olivex-cart-is-open {
   box-shadow: none;
   gap: 12px;
   width: 100%;
-  max-width: 270px;
+  max-width: 300px;
   justify-self: center;
 }
 
@@ -1032,21 +1032,6 @@ body.olivex-cart-is-open {
   gap: 10px;
 }
 
-.props[data-olivex-editorial-branch="five"] .prop-card:nth-child(6) {
-  grid-area: 1 / 11 / 4 / 12;
-  align-self: stretch;
-  align-content: center;
-  width: auto;
-  max-width: none;
-  margin-block: clamp(-42px, -2.8vw, -30px) clamp(-34px, -2.05vw, -22px);
-  margin-left: clamp(30px, 3.1vw, 47px);
-  gap: 18px;
-  padding: clamp(52px, 4vw, 60px) clamp(28px, 2.3vw, 35px) clamp(10px, 1vw, 15px);
-  border-left: 3px solid var(--accent) !important;
-  border-radius: 0 var(--radius) var(--radius) 0;
-  background: var(--olive-deep) !important;
-}
-
 .props[data-olivex-editorial-branch="five"] .prop-num {
   width: 100%;
   justify-self: center;
@@ -1060,11 +1045,11 @@ body.olivex-cart-is-open {
 }
 
 @media (min-width: 921px) {
-  .props[data-olivex-editorial-branch="five"] .prop-card:nth-child(1) { left: clamp(-24px, -1.65vw, -18px); }
-  .props[data-olivex-editorial-branch="five"] .prop-card:nth-child(2) { left: clamp(34px, 3.25vw, 49px); }
-  .props[data-olivex-editorial-branch="five"] .prop-card:nth-child(3) { left: clamp(45px, 4.75vw, 72px); }
-  .props[data-olivex-editorial-branch="five"] .prop-card:nth-child(4) { left: clamp(20px, 1.95vw, 29px); }
-  .props[data-olivex-editorial-branch="five"] .prop-card:nth-child(5) { left: clamp(4px, 0.75vw, 12px); }
+  .props[data-olivex-editorial-branch="five"] .prop-card:nth-child(1) { left: clamp(-25px, -1.62vw, -20px); }
+  .props[data-olivex-editorial-branch="five"] .prop-card:nth-child(2) { left: clamp(50px, 4.17vw, 63px); }
+  .props[data-olivex-editorial-branch="five"] .prop-card:nth-child(3) { left: clamp(64px, 5.36vw, 81px); }
+  .props[data-olivex-editorial-branch="five"] .prop-card:nth-child(4) { left: clamp(13px, 1.1vw, 17px); }
+  .props[data-olivex-editorial-branch="five"] .prop-card:nth-child(5) { left: clamp(-17px, -1.1vw, -13px); }
 }
 
 .props[data-olivex-editorial-branch="five"] .prop-card:nth-child(2) .prop-num,
@@ -1078,38 +1063,15 @@ body.olivex-cart-is-open {
   transform: translateY(-12px);
 }
 
-.props[data-olivex-editorial-branch="five"] .prop-card:not(:last-child) h3 {
+.props[data-olivex-editorial-branch="five"] .prop-card h3 {
   font-size: clamp(18px, 1.65vw, 21px);
   width: 100%;
   text-align: center;
 }
 
-.props[data-olivex-editorial-branch="five"] .prop-card:not(:last-child) p {
+.props[data-olivex-editorial-branch="five"] .prop-card p {
   font-size: 14.5px;
   line-height: 1.55;
-}
-
-.props[data-olivex-editorial-branch="five"] .prop-card:last-child .prop-num {
-  color: var(--gold);
-  font-family: var(--font-mono);
-  font-size: 22px;
-  justify-self: start;
-  text-align: left;
-  margin-bottom: 12px;
-}
-
-.props[data-olivex-editorial-branch="five"] .prop-card:last-child h3 {
-  font-size: clamp(21px, 1.55vw, 23px);
-  text-wrap: pretty;
-}
-
-.props[data-olivex-editorial-branch="five"] .prop-card:last-child p {
-  font-size: 14px;
-  line-height: 1.5;
-}
-
-.props[data-olivex-editorial-branch="five"] .prop-card:last-child .btn {
-  padding-inline: 28px;
 }
 
 @media (max-width: 920px) {
@@ -1159,14 +1121,6 @@ body.olivex-cart-is-open {
     transform: none;
   }
 
-  .props[data-olivex-editorial-branch="five"] .prop-card:nth-child(6) {
-    grid-column: 1 / -1;
-    min-height: 260px;
-    margin: 0;
-    padding: 34px;
-    border-top: 0;
-    border-left: 3px solid var(--accent) !important;
-  }
 }
 
 @media (max-width: 620px) {
@@ -1189,9 +1143,6 @@ body.olivex-cart-is-open {
     background-size: contain;
   }
 
-  .props[data-olivex-editorial-branch="five"] .prop-card:nth-child(6) {
-    grid-column: 1;
-  }
 }
 
 @media (max-width: 340px) {

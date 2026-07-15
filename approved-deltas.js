@@ -165,7 +165,11 @@
     const howto = document.querySelector("section.howto");
     props?.setAttribute("data-olivex-editorial-branch", "five");
     howto?.setAttribute("data-olivex-editorial-branch", "three");
-    props?.querySelectorAll(".prop-card:not(:last-child) .prop-num").forEach((number, index) => {
+    const propsCta = Array.from(props?.querySelectorAll(".prop-card") || []).find(
+      (card) => card.querySelector("h3")?.textContent.trim() === "Smak forskjellen selv"
+    );
+    propsCta?.remove();
+    props?.querySelectorAll(".prop-card .prop-num").forEach((number, index) => {
       number.textContent = String(index + 1).padStart(2, "0");
     });
 
