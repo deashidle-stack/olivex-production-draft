@@ -945,7 +945,14 @@ body.olivex-cart-is-open {
 
 .props[data-olivex-editorial-branch="five"] .section-head {
   max-width: 780px;
+  margin-inline: auto;
   margin-bottom: clamp(46px, 6vw, 72px);
+  justify-items: center;
+  text-align: center;
+}
+
+.props[data-olivex-editorial-branch="five"] .section-head .eyebrow {
+  justify-content: center;
 }
 
 .props[data-olivex-editorial-branch="five"] .props-grid {
