@@ -166,7 +166,7 @@
     props?.setAttribute("data-olivex-editorial-branch", "five");
     howto?.setAttribute("data-olivex-editorial-branch", "three");
     props?.querySelectorAll(".prop-card:not(:last-child) .prop-num").forEach((number, index) => {
-      number.textContent = String(index + 1);
+      number.textContent = String(index + 1).padStart(2, "0");
     });
 
     const buySection = document.querySelector("#bestill");

@@ -427,6 +427,8 @@
   opacity: 0.34;
   mix-blend-mode: luminosity;
   filter: saturate(0.72) contrast(0.94);
+  transform: translateX(-7%) scale(1.08);
+  transform-origin: center;
   pointer-events: none;
 }
 
@@ -435,6 +437,7 @@
     object-fit: cover;
     object-position: 50% 62%;
     opacity: 0.28;
+    transform: translateX(-3%) scale(1.08);
   }
 }
 
@@ -939,14 +942,23 @@ body.olivex-cart-is-open {
 /* Fem grunner: one olive branch, five editorial chapters and Jakob's CTA. */
 .props[data-olivex-editorial-branch="five"] {
   overflow: hidden;
+  min-height: clamp(760px, 68.9vw, 1041px);
+  padding-block: clamp(108px, 8.75vw, 132px) clamp(88px, 7.3vw, 110px);
   border-block: 0;
   background: var(--bone);
+}
+
+.props[data-olivex-editorial-branch="five"] > .wrap {
+  width: 100%;
+  max-width: 1511px;
+  padding-left: clamp(28px, 3.1vw, 47px);
+  padding-right: clamp(22px, 2.2vw, 33px);
 }
 
 .props[data-olivex-editorial-branch="five"] .section-head {
   max-width: 780px;
   margin-inline: auto;
-  margin-bottom: clamp(46px, 6vw, 72px);
+  margin-bottom: clamp(58px, 4.55vw, 69px);
   justify-items: center;
   text-align: center;
 }
@@ -958,20 +970,24 @@ body.olivex-cart-is-open {
 .props[data-olivex-editorial-branch="five"] .props-grid {
   position: relative;
   display: grid;
-  grid-template-columns: repeat(12, minmax(0, 1fr));
-  grid-template-rows: minmax(168px, auto) 132px minmax(168px, auto);
-  column-gap: 18px;
+  grid-template-columns: repeat(10, minmax(0, 1fr)) clamp(270px, 22.2vw, 335px);
+  grid-template-rows: minmax(205px, auto) auto minmax(185px, auto);
+  column-gap: 0;
   row-gap: 0;
   align-items: start;
 }
 
 .props[data-olivex-editorial-branch="five"] .props-grid::before {
   content: "";
-  grid-area: 2 / 1 / 3 / 10;
-  width: 100%;
-  height: 132px;
+  grid-area: 2 / 1 / 3 / 11;
+  width: calc(100% + clamp(24px, 2.7vw, 41px));
+  height: auto;
+  aspect-ratio: 1129 / 166;
   align-self: center;
-  background: url("./assets/olive-branch-five-approved.png?v=1") center / contain no-repeat;
+  justify-self: start;
+  margin-left: clamp(-12px, -0.75vw, -8px);
+  background: url("./assets/olive-branch-five-approved.png?v=2") center / 100% 100% no-repeat;
+  filter: saturate(1.85) contrast(1.32) brightness(0.86);
   pointer-events: none;
 }
 
@@ -983,7 +999,10 @@ body.olivex-cart-is-open {
   border-radius: 0;
   background: transparent;
   box-shadow: none;
-  gap: 8px;
+  gap: 12px;
+  width: 100%;
+  max-width: 270px;
+  justify-self: center;
 }
 
 .props[data-olivex-editorial-branch="five"] .prop-card:nth-child(1) {
@@ -993,6 +1012,7 @@ body.olivex-cart-is-open {
 
 .props[data-olivex-editorial-branch="five"] .prop-card:nth-child(2) {
   grid-area: 3 / 2 / 4 / 5;
+  padding-top: clamp(24px, 2vw, 30px);
 }
 
 .props[data-olivex-editorial-branch="five"] .prop-card:nth-child(3) {
@@ -1001,23 +1021,26 @@ body.olivex-cart-is-open {
 }
 
 .props[data-olivex-editorial-branch="five"] .prop-card:nth-child(4) {
-  grid-area: 3 / 5 / 4 / 9;
-  width: 100%;
-  max-width: 256px;
-  justify-self: center;
+  grid-area: 3 / 6 / 4 / 9;
+  padding-top: clamp(24px, 2vw, 30px);
 }
 
 .props[data-olivex-editorial-branch="five"] .prop-card:nth-child(5) {
-  grid-area: 1 / 7 / 2 / 10;
+  grid-area: 1 / 8 / 2 / 11;
   align-self: start;
+  gap: 10px;
 }
 
 .props[data-olivex-editorial-branch="five"] .prop-card:nth-child(6) {
-  grid-area: 1 / 10 / 4 / 13;
+  grid-area: 1 / 11 / 4 / 12;
   align-self: stretch;
   align-content: center;
+  width: auto;
+  max-width: none;
+  margin-block: clamp(-42px, -2.8vw, -30px) clamp(-34px, -2.05vw, -22px);
+  margin-left: clamp(30px, 3.1vw, 47px);
   gap: 18px;
-  padding: clamp(28px, 3.4vw, 40px);
+  padding: clamp(52px, 4vw, 60px) clamp(28px, 2.3vw, 35px) clamp(10px, 1vw, 15px);
   border-left: 3px solid var(--accent) !important;
   border-radius: 0 var(--radius) var(--radius) 0;
   background: var(--olive-deep) !important;
@@ -1027,23 +1050,68 @@ body.olivex-cart-is-open {
   width: 100%;
   justify-self: center;
   text-align: center;
-  font-family: var(--font-mono);
-  font-size: clamp(20px, 1.8vw, 24px);
-  font-weight: 400;
-  line-height: 1;
-  letter-spacing: 0;
+  font-family: var(--font-display);
+  font-size: clamp(54px, 4.1vw, 62px);
+  font-weight: 500;
+  line-height: 0.74;
+  letter-spacing: -0.025em;
   color: var(--olive-deep);
 }
 
 @media (min-width: 921px) {
-  .props[data-olivex-editorial-branch="five"] .prop-card:nth-child(1) { left: -22px; }
-  .props[data-olivex-editorial-branch="five"] .prop-card:nth-child(2) { left: 16px; }
-  .props[data-olivex-editorial-branch="five"] .prop-card:nth-child(3) { left: 6px; }
-  .props[data-olivex-editorial-branch="five"] .prop-card:nth-child(4) { left: -8px; }
+  .props[data-olivex-editorial-branch="five"] .prop-card:nth-child(1) { left: clamp(-24px, -1.65vw, -18px); }
+  .props[data-olivex-editorial-branch="five"] .prop-card:nth-child(2) { left: clamp(34px, 3.25vw, 49px); }
+  .props[data-olivex-editorial-branch="five"] .prop-card:nth-child(3) { left: clamp(45px, 4.75vw, 72px); }
+  .props[data-olivex-editorial-branch="five"] .prop-card:nth-child(4) { left: clamp(20px, 1.95vw, 29px); }
+  .props[data-olivex-editorial-branch="five"] .prop-card:nth-child(5) { left: clamp(4px, 0.75vw, 12px); }
+
+  .props[data-olivex-editorial-branch="five"] .prop-card:nth-child(1)::after,
+  .props[data-olivex-editorial-branch="five"] .prop-card:nth-child(3)::after,
+  .props[data-olivex-editorial-branch="five"] .prop-card:nth-child(5)::after,
+  .props[data-olivex-editorial-branch="five"] .prop-card:nth-child(2)::before,
+  .props[data-olivex-editorial-branch="five"] .prop-card:nth-child(4)::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    width: 1px;
+    background: color-mix(in oklab, var(--gold) 92%, var(--olive-deep));
+    transform: translateX(-0.5px);
+    pointer-events: none;
+  }
+
+  .props[data-olivex-editorial-branch="five"] .prop-card:nth-child(1)::after,
+  .props[data-olivex-editorial-branch="five"] .prop-card:nth-child(3)::after {
+    top: calc(100% + 18px);
+    height: 58px;
+  }
+
+  .props[data-olivex-editorial-branch="five"] .prop-card:nth-child(5)::after {
+    top: calc(100% + 8px);
+    height: 50px;
+  }
+
+  .props[data-olivex-editorial-branch="five"] .prop-card:nth-child(2)::before,
+  .props[data-olivex-editorial-branch="five"] .prop-card:nth-child(4)::before {
+    top: -8px;
+    height: 21px;
+  }
+}
+
+.props[data-olivex-editorial-branch="five"] .prop-card:nth-child(2) .prop-num,
+.props[data-olivex-editorial-branch="five"] .prop-card:nth-child(4) .prop-num {
+  transform: translateY(-14px);
+}
+
+.props[data-olivex-editorial-branch="five"] .prop-card:nth-child(1) .prop-num,
+.props[data-olivex-editorial-branch="five"] .prop-card:nth-child(3) .prop-num,
+.props[data-olivex-editorial-branch="five"] .prop-card:nth-child(5) .prop-num {
+  transform: translateY(-12px);
 }
 
 .props[data-olivex-editorial-branch="five"] .prop-card:not(:last-child) h3 {
   font-size: clamp(18px, 1.65vw, 21px);
+  width: 100%;
+  text-align: center;
 }
 
 .props[data-olivex-editorial-branch="five"] .prop-card:not(:last-child) p {
@@ -1055,14 +1123,36 @@ body.olivex-cart-is-open {
   color: var(--gold);
   font-family: var(--font-mono);
   font-size: 22px;
+  justify-self: start;
+  text-align: left;
+  margin-bottom: 12px;
 }
 
 .props[data-olivex-editorial-branch="five"] .prop-card:last-child h3 {
-  font-size: clamp(24px, 2.2vw, 27px);
+  font-size: clamp(21px, 1.55vw, 23px);
   text-wrap: pretty;
 }
 
+.props[data-olivex-editorial-branch="five"] .prop-card:last-child p {
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.props[data-olivex-editorial-branch="five"] .prop-card:last-child .btn {
+  padding-inline: 28px;
+}
+
 @media (max-width: 920px) {
+  .props[data-olivex-editorial-branch="five"] {
+    min-height: 0;
+    padding-block: 88px;
+  }
+
+  .props[data-olivex-editorial-branch="five"] > .wrap {
+    max-width: var(--maxw);
+    padding-inline: 32px;
+  }
+
   .props[data-olivex-editorial-branch="five"] .props-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     grid-template-rows: auto;
@@ -1071,20 +1161,34 @@ body.olivex-cart-is-open {
 
   .props[data-olivex-editorial-branch="five"] .props-grid::before {
     grid-area: 1 / 1 / 2 / -1;
-    height: clamp(150px, 28vw, 220px);
+    width: 100%;
+    height: auto;
+    margin-left: 0;
   }
 
   .props[data-olivex-editorial-branch="five"] .prop-card:nth-child(n) {
     grid-area: auto;
     left: 0;
     align-self: start;
+    width: auto;
+    max-width: none;
+    justify-self: stretch;
     padding-top: 22px;
     border-top: 1px solid color-mix(in oklab, var(--olive) 26%, transparent);
+  }
+
+  .props[data-olivex-editorial-branch="five"] .prop-card:nth-child(2) .prop-num,
+  .props[data-olivex-editorial-branch="five"] .prop-card:nth-child(4) .prop-num,
+  .props[data-olivex-editorial-branch="five"] .prop-card:nth-child(1) .prop-num,
+  .props[data-olivex-editorial-branch="five"] .prop-card:nth-child(3) .prop-num,
+  .props[data-olivex-editorial-branch="five"] .prop-card:nth-child(5) .prop-num {
+    transform: none;
   }
 
   .props[data-olivex-editorial-branch="five"] .prop-card:nth-child(6) {
     grid-column: 1 / -1;
     min-height: 260px;
+    margin: 0;
     padding: 34px;
     border-top: 0;
     border-left: 3px solid var(--accent) !important;
@@ -1092,6 +1196,14 @@ body.olivex-cart-is-open {
 }
 
 @media (max-width: 620px) {
+  .props[data-olivex-editorial-branch="five"] {
+    padding-block: 72px;
+  }
+
+  .props[data-olivex-editorial-branch="five"] > .wrap {
+    padding-inline: 22px;
+  }
+
   .props[data-olivex-editorial-branch="five"] .props-grid {
     grid-template-columns: 1fr;
     gap: 26px;
