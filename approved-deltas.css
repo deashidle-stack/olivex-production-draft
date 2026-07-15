@@ -957,10 +957,11 @@ body.olivex-cart-is-open {
 
 .props[data-olivex-editorial-branch="five"] .section-head {
   max-width: 780px;
-  margin-inline: auto;
+  margin-left: clamp(36px, 3vw, 46px);
+  margin-right: auto;
   margin-bottom: clamp(58px, 4.55vw, 69px);
-  justify-items: center;
-  text-align: center;
+  justify-items: start;
+  text-align: left;
 }
 
 .props[data-olivex-editorial-branch="five"] .section-head .eyebrow {
@@ -1064,37 +1065,6 @@ body.olivex-cart-is-open {
   .props[data-olivex-editorial-branch="five"] .prop-card:nth-child(3) { left: clamp(45px, 4.75vw, 72px); }
   .props[data-olivex-editorial-branch="five"] .prop-card:nth-child(4) { left: clamp(20px, 1.95vw, 29px); }
   .props[data-olivex-editorial-branch="five"] .prop-card:nth-child(5) { left: clamp(4px, 0.75vw, 12px); }
-
-  .props[data-olivex-editorial-branch="five"] .prop-card:nth-child(1)::after,
-  .props[data-olivex-editorial-branch="five"] .prop-card:nth-child(3)::after,
-  .props[data-olivex-editorial-branch="five"] .prop-card:nth-child(5)::after,
-  .props[data-olivex-editorial-branch="five"] .prop-card:nth-child(2)::before,
-  .props[data-olivex-editorial-branch="five"] .prop-card:nth-child(4)::before {
-    content: "";
-    position: absolute;
-    left: 50%;
-    width: 1px;
-    background: color-mix(in oklab, var(--gold) 92%, var(--olive-deep));
-    transform: translateX(-0.5px);
-    pointer-events: none;
-  }
-
-  .props[data-olivex-editorial-branch="five"] .prop-card:nth-child(1)::after,
-  .props[data-olivex-editorial-branch="five"] .prop-card:nth-child(3)::after {
-    top: calc(100% + 18px);
-    height: 58px;
-  }
-
-  .props[data-olivex-editorial-branch="five"] .prop-card:nth-child(5)::after {
-    top: calc(100% + 8px);
-    height: 50px;
-  }
-
-  .props[data-olivex-editorial-branch="five"] .prop-card:nth-child(2)::before,
-  .props[data-olivex-editorial-branch="five"] .prop-card:nth-child(4)::before {
-    top: -8px;
-    height: 21px;
-  }
 }
 
 .props[data-olivex-editorial-branch="five"] .prop-card:nth-child(2) .prop-num,
@@ -1151,6 +1121,10 @@ body.olivex-cart-is-open {
   .props[data-olivex-editorial-branch="five"] > .wrap {
     max-width: var(--maxw);
     padding-inline: 32px;
+  }
+
+  .props[data-olivex-editorial-branch="five"] .section-head {
+    margin-left: 0;
   }
 
   .props[data-olivex-editorial-branch="five"] .props-grid {
