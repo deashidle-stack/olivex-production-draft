@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="nb">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noindex,nofollow,noarchive">
+    <title>Olive X · responsiv kontroll</title>
+    <style>
+      * { box-sizing: border-box; }
+      html, body { min-height: 100%; }
+      body {
+        margin: 0;
+        display: grid;
+        place-items: start center;
+        background: #20251b;
+        padding: 24px;
+        color: #fcfaf3;
+        font: 14px/1.4 ui-monospace, SFMono-Regular, Consolas, monospace;
+      }
+      main { display: grid; gap: 12px; justify-items: center; }
+      p { margin: 0; opacity: .78; }
+      iframe {
+        display: block;
+        border: 1px solid rgba(255,255,255,.22);
+        border-radius: 22px;
+        background: #f5f1e6;
+        box-shadow: 0 26px 80px rgba(0,0,0,.42);
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <p id="DeviceLabel">Responsiv preview</p>
+      <iframe id="PreviewFrame" src="./index.html" title="Olive X responsiv forhåndsvisning"></iframe>
+    </main>
+    <script>
+      const params = new URLSearchParams(location.search);
+      const width = Math.min(1440, Math.max(320, Number(params.get('width')) || 390));
+      const height = Math.min(1200, Math.max(568, Number(params.get('height')) || 844));
+      const frame = document.getElementById('PreviewFrame');
+      const cacheKey = params.get('cache');
+      const page = 'index.html';
+      const frameParams = new URLSearchParams();
+      if (cacheKey) frameParams.set('cache', cacheKey);
+      frame.src = `./${page}${frameParams.size ? `?${frameParams}` : ''}`;
+      frame.width = width;
+      frame.height = height;
+      const pageLabel = 'Jakob recovery';
+      document.getElementById('DeviceLabel').textContent = `${pageLabel} · ${width} × ${height} px`;
+      document.title = `Olive X · ${pageLabel} · ${width} × ${height}`;
+    </script>
+  </body>
+</html>
