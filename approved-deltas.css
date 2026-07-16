@@ -996,7 +996,7 @@ body.olivex-cart-is-open {
   align-self: center;
   justify-self: stretch;
   margin-left: 0;
-  background: url("./assets/olive-branch-five-approved.png?v=2") center / contain no-repeat;
+  background: url("./assets/olive-branch-five-approved.png?v=3") center / contain no-repeat;
   filter: saturate(1.85) contrast(1.32) brightness(0.86);
   pointer-events: none;
 }
