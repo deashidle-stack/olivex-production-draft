@@ -583,7 +583,7 @@
 
 @media (min-width: 721px) {
   .heritage .heritage-card {
-    left: max(24px, calc((100vw - var(--maxw)) / 2 - 32px));
+    left: clamp(40px, 6vw, 104px);
     bottom: 96px;
   }
 
