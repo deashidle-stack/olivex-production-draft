@@ -582,6 +582,11 @@
 }
 
 @media (min-width: 721px) {
+  .heritage .heritage-card {
+    left: max(24px, calc((100vw - var(--maxw)) / 2));
+    bottom: 72px;
+  }
+
   .heritage.is-video-active .heritage-card {
     display: none;
   }
@@ -996,7 +1001,7 @@ body.olivex-cart-is-open {
   align-self: center;
   justify-self: stretch;
   margin-left: 0;
-  background: url("./assets/olive-branch-five-approved.png?v=3") center / contain no-repeat;
+  background: url("./assets/olive-branch-five-approved.png?v=4") center / contain no-repeat;
   filter: saturate(1.85) contrast(1.32) brightness(0.86);
   pointer-events: none;
 }
