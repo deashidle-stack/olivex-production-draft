@@ -583,8 +583,8 @@
 
 @media (min-width: 721px) {
   .heritage .heritage-card {
-    left: max(24px, calc((100vw - var(--maxw)) / 2));
-    bottom: 72px;
+    left: max(24px, calc((100vw - var(--maxw)) / 2 - 32px));
+    bottom: 96px;
   }
 
   .heritage.is-video-active .heritage-card {
