@@ -391,9 +391,8 @@
     nameNode?.querySelector(".plan-badge")?.remove();
     const name = nameNode?.textContent.trim() || "Olive X";
     const isSubscription = Boolean(selected.querySelector(".plan-badge"));
-    const isSample = /smaksprøve/i.test(name);
     const quantityValue = Number(selected.querySelector(".qty-num")?.textContent.trim());
-    const quantity = isSample ? 1 : Math.min(12, Math.max(1, Number.isFinite(quantityValue) ? quantityValue : 1));
+    const quantity = Math.min(12, Math.max(1, Number.isFinite(quantityValue) ? quantityValue : 1));
     const unitPrice = parseNok(selected.querySelector(".plan-price strong")?.textContent);
     const comparePrice = parseNok(selected.querySelector(".plan-compare")?.textContent);
     const intervalButton = selected.querySelector(".interval-pill.selected");
@@ -407,11 +406,9 @@
       unitPrice,
       total: unitPrice * quantity,
       compareTotal: comparePrice > unitPrice ? comparePrice * quantity : 0,
-      meta: isSample
-        ? "100 ml · Engangskjøp"
-        : isSubscription
-          ? `500 ml · Levering hver ${interval}. dag`
-          : "500 ml · Engangskjøp"
+      meta: isSubscription
+        ? `500 ml · Levering hver ${interval}. dag`
+        : "500 ml · Engangskjøp"
     };
   }
 
@@ -510,24 +507,6 @@
     });
   }
 
-  function ensureDocumentLinks() {
-    const certificates = Array.from(document.querySelectorAll("#lab .certs > a.cert"));
-    if (certificates.length !== 4) return;
-
-    certificates.slice(0, 3).forEach((link) => {
-      link.setAttribute("aria-disabled", "true");
-      link.setAttribute("tabindex", "-1");
-      link.dataset.olivexMissingDocument = "true";
-    });
-
-    const efsa = certificates[3];
-    efsa.href = "https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX:02012R0432-20160620";
-    efsa.target = "_blank";
-    efsa.rel = "noopener noreferrer";
-    efsa.removeAttribute("aria-disabled");
-    efsa.removeAttribute("tabindex");
-  }
-
   function ensurePurchaseOptions() {
     const purchase = document.querySelector("#bestill");
     if (!purchase) return;
@@ -539,11 +518,6 @@
     const stockNote = purchase.querySelector(".stock-note");
     if (stockNote?.textContent.includes("[FRAKTINFO]")) {
       stockNote.textContent = "På lager — sendes innen 1–2 virkedager · Gratis frakt over 800,–";
-    }
-
-    const savings = subscription.querySelector(".plan-perks li:first-child");
-    if (savings && savings.textContent.trim() === "Du sparer 15 % hver gang") {
-      savings.textContent = "Du sparer 10 % hver gang";
     }
 
     const intervalRow = subscription.querySelector(".interval-row");
@@ -580,21 +554,13 @@
     });
   }
 
-  function removeUnresolvedFooterPlaceholder() {
-    const footerMeta = document.querySelector(".footer-meta");
-    if (!footerMeta?.textContent.includes("[ORG.NR]")) return;
-    footerMeta.textContent = "Olive X · Norge · Importør av høyfenolisk olivenolje fra Hellas";
-  }
-
   function applyApprovedDeltas() {
     applyQueued = false;
     ensureVideo();
     ensureEditorialSections();
     ensurePreviewCart();
     ensureReferences();
-    ensureDocumentLinks();
     ensurePurchaseOptions();
-    removeUnresolvedFooterPlaceholder();
   }
 
   function scheduleApply() {

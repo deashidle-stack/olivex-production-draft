@@ -23,25 +23,11 @@
   min-height: 44px;
 }
 
-/* Requested mobile repair for the purchase price and three frequencies. */
+/* Requested mobile repair for the three frequencies. */
 @media (max-width: 430px) {
   html,
   body {
     overflow-x: clip;
-  }
-
-  #bestill .plan-head {
-    display: grid;
-    grid-template-columns: 18px minmax(0, 1fr);
-    align-items: start;
-  }
-
-  #bestill .plan-price {
-    grid-column: 2;
-    justify-self: end;
-    max-width: 100%;
-    margin-left: 0;
-    white-space: nowrap;
   }
 
   #bestill .interval-row {
@@ -57,22 +43,12 @@
     white-space: nowrap;
   }
 
-  #sticky-buy {
-    width: calc(100% - 24px);
-    gap: 10px;
-    padding-left: 18px;
-  }
-
   #sticky-buy .sb-label {
     font-size: 13px;
   }
 
   #sticky-buy .sb-sub {
     font-size: 10px;
-  }
-
-  #sticky-buy > .btn {
-    padding-inline: 16px;
   }
 }
 
@@ -1515,5 +1491,146 @@ body.olivex-cart-is-open {
   #forskning .study:hover,
   #forskning .study:focus-within {
     transform: none;
+  }
+}
+
+/* ============================================================
+   Godkjente endringer 2026-07-26 — kundefeedback fra mailtråden
+   (Jakob 18.07 del 2, Espen 20.07). Alle visninger + mobil.
+   ============================================================ */
+
+/* Batch-tall-wrappere (batch-facts.js) skal være visuelt usynlige:
+   de arver alltid stilen fra elementet de står i, selv der maler har
+   generiske span-regler (.hx-fact span, .donut-center span, osv.). */
+span[data-fact] {
+  font: inherit !important;
+  color: inherit !important;
+  letter-spacing: inherit !important;
+}
+
+/* Datablad: kildemerking (★) og forklaringer for peroksid/squalen. */
+.datasheet .ds-note {
+  display: block;
+  font-family: var(--font-body);
+  font-size: 12px;
+  letter-spacing: 0;
+  color: var(--ink-soft);
+  margin-top: 3px;
+  max-width: 36ch;
+  white-space: normal;
+}
+
+.datasheet .ds-footnote {
+  margin: 0;
+  padding: 14px 28px 18px;
+  border-top: 1px solid var(--clay);
+  font-family: var(--font-body);
+  font-size: 12.5px;
+  line-height: 1.55;
+  color: var(--ink-soft);
+}
+
+/* Blodmarkører: hva hver markør måler. */
+.markers .marker small {
+  display: block;
+  font-family: var(--font-body);
+  font-size: 11.5px;
+  letter-spacing: 0;
+  color: var(--ink-soft);
+  margin-top: 2px;
+}
+
+@media (max-width: 640px) {
+  /* 1 — markør-boksene på egen linje under teksten.
+     (#forskning-prefiks: malens inline-stiler ligger senere i kaskaden.) */
+  #forskning .markers {
+    display: grid;
+    justify-items: start;
+    gap: 10px;
+  }
+
+  #forskning .markers-label {
+    margin-right: 0;
+  }
+
+  /* 2 — prisen på egen linje øverst i bestillingskortene. */
+  #bestill .plan-head {
+    flex-wrap: wrap;
+  }
+
+  #bestill .plan-price {
+    order: -1;
+    flex: 1 0 100%;
+    margin-left: 0;
+    text-align: left;
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+  }
+
+  #bestill .plan-price small {
+    margin-top: 0;
+  }
+
+  #bestill .plan-price strong,
+  #bestill .plan-price .plan-compare {
+    white-space: nowrap;
+  }
+
+  /* 3 + 5 — venstrestilte, konsistente overskrifter i alle seksjoner. */
+  .section-head,
+  .reviews-head {
+    max-width: none;
+    text-align: left !important;
+    justify-items: start !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+
+  .section-head .eyebrow,
+  .reviews-head .eyebrow {
+    justify-content: flex-start !important;
+  }
+
+  /* 4 — «Aldri til steking» som etikett øverst, brødtekst under. */
+  section.howto .howto-warn {
+    display: block;
+  }
+
+  section.howto .howto-warn strong {
+    display: block;
+    margin-bottom: 6px;
+  }
+
+  /* 6 — hero-knappene i full bredde. */
+  .hero-ctas {
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+  }
+
+  .hero-ctas .btn {
+    width: 100%;
+  }
+
+  /* 7 — sticky kjøpslinje: mindre dødrom, større knapp. */
+  #sticky-buy {
+    left: 16px;
+    right: 16px;
+    width: auto;
+    transform: translateY(120px);
+    justify-content: space-between;
+    gap: 12px;
+    border-radius: 22px;
+    padding: 10px 10px 10px 20px;
+  }
+
+  #sticky-buy.visible {
+    transform: translateY(0);
+  }
+
+  #sticky-buy > .btn {
+    flex: 1 1 auto;
+    padding: 15px 18px;
   }
 }
