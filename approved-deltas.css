@@ -1634,3 +1634,8 @@ span[data-fact] {
     padding: 15px 18px;
   }
 }
+
+/* Sertifikatknappene: filtype/størrelse skal aldri brekke over to linjer. */
+#lab .certs .cert span {
+  white-space: nowrap;
+}
