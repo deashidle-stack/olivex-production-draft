@@ -131,7 +131,9 @@
         number.className = "olivex-study-number";
         study.prepend(number);
       }
-      number.textContent = reference.number;
+      // Guard: an unconditional write fires a childList mutation, which wakes
+      // the observer and schedules a new frame — a permanent rAF loop.
+      if (number.textContent !== reference.number) number.textContent = reference.number;
       if (!study.querySelector(":scope > .olivex-study-link")) {
         study.append(createStudyLink(reference, study.querySelector("h3")?.textContent.trim() || "forskningsreferanse"));
       }
@@ -178,7 +180,8 @@
     );
     propsCta?.remove();
     props?.querySelectorAll(".prop-card .prop-num").forEach((number, index) => {
-      number.textContent = String(index + 1).padStart(2, "0");
+      const numbering = String(index + 1).padStart(2, "0");
+      if (number.textContent !== numbering) number.textContent = numbering;
     });
 
     const buySection = document.querySelector("#bestill");
@@ -373,11 +376,17 @@
   }
 
   function parseNok(value) {
-    const normalized = String(value || "")
+    let normalized = String(value || "")
       .replace(/\s/g, "")
       .replace(/kr/gi, "")
-      .replace(",", ".")
-      .replace(/[^0-9.-]/g, "");
+      .replace(/[^0-9.,-]/g, "");
+    // Norsk format: punktum er tusenskille, komma er desimaltegn
+    // ("1.395,00" → 1395.00). Uten komma tolkes punktum som tusenskille.
+    if (normalized.includes(",")) {
+      normalized = normalized.replace(/\./g, "").replace(",", ".");
+    } else {
+      normalized = normalized.replace(/\.(?=\d{3}(?:\D|$))/g, "");
+    }
     const parsed = Number(normalized);
     return Number.isFinite(parsed) ? parsed : 0;
   }
