@@ -563,6 +563,104 @@
     });
   }
 
+  // ------------------------------------------------------------------
+  // Dokumentviser: sertifikater åpnes i en integrert overlay på desktop.
+  // På mobil/iPad beholdes nettleserens native visning (innebygd PDF i
+  // iframe er upålitelig på iOS), så lenken får gjøre jobben selv der.
+  // ------------------------------------------------------------------
+  let documentViewerOpenFrom = null;
+
+  function documentViewerSupported() {
+    const isIosLike = /iP(hone|ad|od)/.test(navigator.platform)
+      || (navigator.maxTouchPoints > 1 && /Mac/.test(navigator.platform));
+    return window.matchMedia("(min-width: 820px)").matches && !isIosLike;
+  }
+
+  function createDocumentViewer() {
+    const shell = document.createElement("div");
+    shell.className = "olivex-doc-viewer";
+    shell.dataset.olivexDocViewer = "";
+    shell.hidden = true;
+    shell.innerHTML = [
+      '<div class="olivex-doc-viewer__backdrop" data-doc-viewer-dismiss aria-hidden="true"></div>',
+      '<section class="olivex-doc-viewer__panel" role="dialog" aria-modal="true" aria-labelledby="olivex-doc-viewer-title">',
+      '  <header class="olivex-doc-viewer__header">',
+      '    <div class="olivex-doc-viewer__heading"><p class="eyebrow">Dokumentasjon</p><h2 id="olivex-doc-viewer-title" tabindex="-1"></h2></div>',
+      '    <div class="olivex-doc-viewer__actions">',
+      '      <a class="olivex-doc-viewer__action" data-doc-viewer-open href="#" target="_blank" rel="noopener noreferrer">Åpne i ny fane</a>',
+      '      <a class="olivex-doc-viewer__action" data-doc-viewer-download href="#" download>Last ned</a>',
+      '      <button type="button" class="olivex-doc-viewer__close" data-doc-viewer-dismiss>Lukk</button>',
+      '    </div>',
+      '  </header>',
+      '  <div class="olivex-doc-viewer__body" data-doc-viewer-body></div>',
+      '</section>'
+    ].join("");
+    return shell;
+  }
+
+  function ensureDocumentViewer() {
+    let shell = document.querySelector("[data-olivex-doc-viewer]");
+    if (shell) return shell;
+    shell = createDocumentViewer();
+    document.body.append(shell);
+    shell.querySelectorAll("[data-doc-viewer-dismiss]").forEach((control) => {
+      control.addEventListener("click", closeDocumentViewer);
+    });
+    return shell;
+  }
+
+  function closeDocumentViewer() {
+    const shell = document.querySelector("[data-olivex-doc-viewer]");
+    if (!shell || shell.hidden) return;
+    shell.hidden = true;
+    shell.querySelector("[data-doc-viewer-body]").replaceChildren();
+    document.documentElement.style.removeProperty("overflow");
+    if (documentViewerOpenFrom?.isConnected) {
+      const returnTarget = documentViewerOpenFrom;
+      window.requestAnimationFrame(() => returnTarget.focus({ preventScroll: true }));
+    }
+    documentViewerOpenFrom = null;
+  }
+
+  function openDocumentViewer(link) {
+    const shell = ensureDocumentViewer();
+    const label = link.cloneNode(true);
+    label.querySelector("svg")?.remove();
+    label.querySelector("span")?.remove();
+    const name = label.textContent.trim().replace(/\s+/g, " ") || "Dokument";
+
+    shell.querySelector("#olivex-doc-viewer-title").textContent = name;
+    const openAction = shell.querySelector("[data-doc-viewer-open]");
+    const downloadAction = shell.querySelector("[data-doc-viewer-download]");
+    openAction.href = link.href;
+    const sameOrigin = new URL(link.href, window.location.href).origin === window.location.origin;
+    downloadAction.hidden = !sameOrigin;
+    if (sameOrigin) downloadAction.href = link.href;
+
+    const body = shell.querySelector("[data-doc-viewer-body]");
+    if (/\.pdf(?:[?#]|$)/i.test(link.href)) {
+      const frame = document.createElement("iframe");
+      frame.className = "olivex-doc-viewer__frame";
+      frame.src = link.href + "#view=FitH";
+      frame.title = name;
+      body.replaceChildren(frame);
+    } else {
+      const scroller = document.createElement("div");
+      scroller.className = "olivex-doc-viewer__scroller";
+      const image = document.createElement("img");
+      image.src = link.href;
+      image.alt = name;
+      image.decoding = "async";
+      scroller.append(image);
+      body.replaceChildren(scroller);
+    }
+
+    documentViewerOpenFrom = link;
+    shell.hidden = false;
+    document.documentElement.style.overflow = "hidden";
+    window.requestAnimationFrame(() => shell.querySelector(".olivex-doc-viewer__close")?.focus({ preventScroll: true }));
+  }
+
   function applyApprovedDeltas() {
     applyQueued = false;
     ensureVideo();
@@ -592,6 +690,14 @@
       return;
     }
 
+    const certificate = event.target.closest?.("#lab .certs a.cert");
+    if (certificate && documentViewerSupported()
+      && !event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey) {
+      event.preventDefault();
+      openDocumentViewer(certificate);
+      return;
+    }
+
     const intervalButton = event.target.closest?.("#bestill .interval-pill");
     if (intervalButton) {
       const interval = intervalButton.dataset.olivexInterval || intervalButton.textContent.trim().match(/^(30|60)/)?.[1];
@@ -617,6 +723,30 @@
   }, true);
 
   document.addEventListener("keydown", (event) => {
+    const viewer = document.querySelector("[data-olivex-doc-viewer]");
+    if (viewer && !viewer.hidden) {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        closeDocumentViewer();
+        return;
+      }
+      if (event.key === "Tab") {
+        const focusable = Array.from(viewer.querySelectorAll('a[href]:not([hidden]), button:not([disabled])'))
+          .filter((element) => element.getClientRects().length > 0);
+        if (!focusable.length) return;
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (event.shiftKey && document.activeElement === first) {
+          event.preventDefault();
+          last.focus();
+        } else if (!event.shiftKey && document.activeElement === last) {
+          event.preventDefault();
+          first.focus();
+        }
+      }
+      return;
+    }
+
     const shell = document.querySelector("[data-olivex-preview-cart]");
     if (!shell || shell.hidden) return;
 

@@ -149,11 +149,11 @@ document.addEventListener('DOMContentLoaded', async function() {
     // discarded by documentElement.replaceWith below.
     template = template.replace(
       /<\/head>/i,
-      '<meta name="robots" content="noindex,nofollow,noarchive"><link rel="stylesheet" href="./approved-deltas.css?v=approved-20260810a"><\/head>'
+      '<meta name="robots" content="noindex,nofollow,noarchive"><link rel="stylesheet" href="./approved-deltas.css?v=approved-20260810b"><\/head>'
     );
     template = template.replace(
       /<\/body>/i,
-      '<scr' + 'ipt src="./batch-facts.js?v=20260810a"><\/scr' + 'ipt><scr' + 'ipt src="./approved-deltas.js?v=approved-20260809a"><\/scr' + 'ipt><\/body>'
+      '<scr' + 'ipt src="./batch-facts.js?v=20260810a"><\/scr' + 'ipt><scr' + 'ipt src="./approved-deltas.js?v=approved-20260810b"><\/scr' + 'ipt><\/body>'
     );
 
     // Parse the template and swap the root element. Scripts inserted via
