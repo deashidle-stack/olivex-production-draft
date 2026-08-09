@@ -1665,6 +1665,8 @@ span[data-fact] {
 }
 
 .olivex-doc-viewer__panel {
+  /* malens generiske section-regel gir 96px topp/bunn — nulles her */
+  padding: 0;
   position: relative;
   display: flex;
   flex-direction: column;
