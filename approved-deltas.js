@@ -629,7 +629,9 @@
     const collapsed = {
       transform: `translate(${rect.left}px, ${rect.top}px) scale(${(rect.width / width).toFixed(4)}, ${(rect.height / height).toFixed(4)})`,
       borderRadius: "12px",
-      opacity: 0.4
+      // Nesten ugjennomsiktig: flaten skal lese som at kortet vokser,
+      // ikke som at et spoekelse toner inn.
+      opacity: 0.92
     };
     const expanded = { transform: "translate(0px, 0px) scale(1, 1)", borderRadius: "0px", opacity: 1 };
     const frames = opening ? [collapsed, expanded] : [expanded, collapsed];
