@@ -641,7 +641,7 @@
     if (/\.pdf(?:[?#]|$)/i.test(link.href)) {
       const frame = document.createElement("iframe");
       frame.className = "olivex-doc-viewer__frame";
-      frame.src = link.href + "#view=FitH";
+      frame.src = link.href + "#toolbar=0&navpanes=0&view=FitH&zoom=page-width";
       frame.title = name;
       body.replaceChildren(frame);
     } else {

@@ -1648,8 +1648,7 @@ span[data-fact] {
   inset: 0;
   z-index: 120;
   display: grid;
-  place-items: center;
-  padding: 24px;
+  padding: 0;
 }
 
 .olivex-doc-viewer[hidden] {
@@ -1665,17 +1664,18 @@ span[data-fact] {
 }
 
 .olivex-doc-viewer__panel {
-  /* malens generiske section-regel gir 96px topp/bunn — nulles her */
+  /* malens generiske section-regel gir 96px topp/bunn — nulles her.
+     Fullskjerm: dokumentet skal fylle hele visningen. */
   padding: 0;
   position: relative;
   display: flex;
   flex-direction: column;
-  width: min(960px, 94vw);
-  height: min(88vh, 1100px);
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
   background: var(--bone);
-  border-radius: 16px;
+  border-radius: 0;
   overflow: hidden;
-  box-shadow: 0 32px 80px -24px rgba(20, 26, 12, 0.55);
 }
 
 .olivex-doc-viewer__header {
