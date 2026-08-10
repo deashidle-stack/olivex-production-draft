@@ -609,17 +609,69 @@
     return shell;
   }
 
+  // FLIP: panelet vokser ut fra kortet man klikket paa, slik at det leses som
+  // et lag over siden — ikke som en ny fane. Returnerer en promise som er
+  // ferdig naar bevegelsen er over (eller med en gang ved reduced motion).
+  function animateDocumentViewer(shell, origin, opening) {
+    const panel = shell.querySelector(".olivex-doc-viewer__panel");
+    const backdrop = shell.querySelector(".olivex-doc-viewer__backdrop");
+    const header = shell.querySelector(".olivex-doc-viewer__header");
+    const body = shell.querySelector("[data-doc-viewer-body]");
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    if (reduced || !panel || typeof panel.animate !== "function" || !origin) {
+      return Promise.resolve();
+    }
+
+    const rect = origin.getBoundingClientRect();
+    const width = Math.max(1, window.innerWidth);
+    const height = Math.max(1, window.innerHeight);
+    const collapsed = {
+      transform: `translate(${rect.left}px, ${rect.top}px) scale(${(rect.width / width).toFixed(4)}, ${(rect.height / height).toFixed(4)})`,
+      borderRadius: "12px",
+      opacity: 0.4
+    };
+    const expanded = { transform: "translate(0px, 0px) scale(1, 1)", borderRadius: "0px", opacity: 1 };
+    const frames = opening ? [collapsed, expanded] : [expanded, collapsed];
+    const duration = opening ? 460 : 320;
+    const easing = opening ? "cubic-bezier(0.22, 1, 0.36, 1)" : "cubic-bezier(0.4, 0, 0.7, 0.2)";
+
+    const running = [panel.animate(frames, { duration, easing, fill: "both" })];
+    running.push(backdrop.animate(
+      opening ? [{ opacity: 0 }, { opacity: 1 }] : [{ opacity: 1 }, { opacity: 0 }],
+      { duration: opening ? 280 : 260, easing: "ease-out", fill: "both" }
+    ));
+    // Innholdet tones inn etter at flaten har vokst ut, ellers ser man teksten
+    // bli strukket av den ikke-uniforme skaleringen.
+    [header, body].forEach((part) => {
+      if (!part) return;
+      running.push(part.animate(
+        opening ? [{ opacity: 0 }, { opacity: 0 }, { opacity: 1 }] : [{ opacity: 1 }, { opacity: 0 }],
+        { duration: opening ? 520 : 180, easing: "ease-out", fill: "both" }
+      ));
+    });
+
+    return Promise.all(running.map((animation) => animation.finished.catch(() => {})))
+      .then(() => running.forEach((animation) => animation.cancel()));
+  }
+
   function closeDocumentViewer() {
     const shell = document.querySelector("[data-olivex-doc-viewer]");
-    if (!shell || shell.hidden) return;
-    shell.hidden = true;
-    shell.querySelector("[data-doc-viewer-body]").replaceChildren();
-    document.documentElement.style.removeProperty("overflow");
-    if (documentViewerOpenFrom?.isConnected) {
-      const returnTarget = documentViewerOpenFrom;
-      window.requestAnimationFrame(() => returnTarget.focus({ preventScroll: true }));
-    }
-    documentViewerOpenFrom = null;
+    if (!shell || shell.hidden || shell.dataset.olivexDocClosing === "true") return;
+    const returnTarget = documentViewerOpenFrom?.isConnected
+      ? documentViewerOpenFrom
+      : null;
+
+    shell.dataset.olivexDocClosing = "true";
+    animateDocumentViewer(shell, returnTarget, false).then(() => {
+      delete shell.dataset.olivexDocClosing;
+      shell.hidden = true;
+      shell.querySelector("[data-doc-viewer-body]").replaceChildren();
+      document.documentElement.style.removeProperty("overflow");
+      document.documentElement.style.removeProperty("padding-right");
+      if (returnTarget) returnTarget.focus({ preventScroll: true });
+      documentViewerOpenFrom = null;
+    });
   }
 
   function openDocumentViewer(link) {
@@ -657,7 +709,11 @@
 
     documentViewerOpenFrom = link;
     shell.hidden = false;
+    // Kompenser for rullefeltet slik at siden bak ikke hopper naar den laases.
+    const scrollbar = window.innerWidth - document.documentElement.clientWidth;
+    if (scrollbar > 0) document.documentElement.style.paddingRight = `${scrollbar}px`;
     document.documentElement.style.overflow = "hidden";
+    animateDocumentViewer(shell, link, true);
     window.requestAnimationFrame(() => shell.querySelector(".olivex-doc-viewer__close")?.focus({ preventScroll: true }));
   }
 
